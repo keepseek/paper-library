@@ -4,6 +4,8 @@ server/data/
 .npm-cache/
 .tmp/
 push-api.cjs
+reimport.cjs
+账号密码.md
 *.log
 .env
 .DS_Store

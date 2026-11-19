@@ -2,42 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-paper-50 font-sans text-ink-800 antialiased;
+  }
+  ::selection {
+    @apply bg-accent-100 text-ink-900;
+  }
+}
+
 @layer components {
   .btn {
-    @apply inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-primary {
-    @apply btn bg-accent-600 text-white hover:bg-accent-700;
+    @apply btn bg-ink-900 text-paper-50 hover:bg-ink-700;
   }
   .btn-ghost {
-    @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-50;
+    @apply btn border border-ink-200 bg-transparent text-ink-700 hover:border-ink-300 hover:bg-paper-100;
   }
   .btn-danger {
-    @apply btn bg-red-600 text-white hover:bg-red-700;
+    @apply btn border border-red-200 bg-transparent text-red-700 hover:bg-red-50;
   }
   .input {
-    @apply w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-100;
+    @apply w-full rounded-md border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder-ink-300 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-100;
   }
   .label {
-    @apply mb-1 block text-xs font-medium text-ink-600;
+    @apply mb-1 block text-xs font-medium tracking-wide text-ink-500;
   }
   .card {
-    @apply rounded-xl border border-ink-100 bg-white p-4 shadow-sm;
+    @apply rounded-lg border border-ink-100 bg-white p-4 shadow-[0_1px_2px_rgba(29,27,24,0.04)];
   }
   .tag {
-    @apply inline-flex items-center rounded-full bg-accent-50 px-2 py-0.5 text-xs text-accent-700;
+    @apply inline-flex items-center rounded-full border border-ink-200 bg-transparent px-2 py-0.5 text-xs text-ink-500;
   }
   .badge {
     @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  /* 章节标题：衬线 + 细线 */
+  .section-title {
+    @apply font-serif text-base font-semibold text-ink-900;
+  }
+  /* 输入 / 输出 高亮框 */
+  .io-box {
+    @apply rounded-md border p-3;
+  }
+  .io-input {
+    @apply io-box border-accent-200 bg-accent-50;
+  }
+  .io-output {
+    @apply io-box border-ink-200 bg-paper-100;
+  }
+  .io-label {
+    @apply mb-1 text-xs font-semibold tracking-widest;
   }
 }
 
 /* Markdown 渲染内容 */
 .prose-md {
-  @apply text-sm leading-7 text-ink-800;
+  @apply text-sm leading-7 text-ink-700;
 }
 .prose-md h1, .prose-md h2, .prose-md h3 {
-  @apply mb-3 mt-6 font-semibold text-ink-900;
+  @apply mb-3 mt-6 font-serif font-semibold text-ink-900;
 }
 .prose-md h1 { @apply text-xl; }
 .prose-md h2 { @apply text-lg; }
@@ -49,14 +75,14 @@
   @apply rounded bg-ink-50 px-1.5 py-0.5 text-[13px] text-accent-700;
 }
 .prose-md pre {
-  @apply my-3 overflow-x-auto rounded-lg bg-ink-900 p-4 text-[13px] text-ink-100;
+  @apply my-3 overflow-x-auto rounded-md bg-ink-900 p-4 text-[13px] text-ink-100;
 }
 .prose-md pre code { @apply bg-transparent p-0 text-inherit; }
 .prose-md blockquote {
-  @apply my-3 border-l-4 border-accent-100 pl-3 text-ink-600;
+  @apply my-3 border-l-2 border-accent-200 pl-3 text-ink-500;
 }
 .prose-md a { @apply text-accent-600 underline; }
 .prose-md table { @apply my-3 w-full border-collapse text-sm; }
 .prose-md th, .prose-md td { @apply border border-ink-200 px-2 py-1; }
-.prose-md mark { @apply rounded bg-yellow-200 px-0.5; }
+.prose-md mark { @apply rounded bg-accent-100 px-0.5 text-ink-900; }
 .prose-md .katex-display { @apply my-3 overflow-x-auto; }

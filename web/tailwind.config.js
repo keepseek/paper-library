@@ -4,22 +4,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: {
-          50: '#f6f7f9',
-          100: '#eaecef',
-          200: '#d5d9e0',
-          400: '#8a93a3',
-          600: '#4c5568',
-          800: '#232a38',
-          900: '#161b26'
+        // 暖纸色（电子墨水底）
+        paper: {
+          50: '#faf8f2',
+          100: '#f3efe4',
+          200: '#e9e3d3',
+          300: '#d8cfb8'
         },
+        // 墨色（暖调深灰）
+        ink: {
+          50: '#f4f3ef',
+          100: '#e6e4dd',
+          200: '#cfcbbf',
+          300: '#a8a394',
+          400: '#837e6f',
+          500: '#6b665a',
+          600: '#55514a',
+          700: '#403d37',
+          800: '#2c2a26',
+          900: '#1d1b18'
+        },
+        // 朱砂（暖色强调）
         accent: {
-          50: '#eef4ff',
-          100: '#d9e6ff',
-          500: '#3565d8',
-          600: '#2a51b8',
-          700: '#23439a'
+          50: '#fbf1ea',
+          100: '#f5ddcd',
+          200: '#eabfa2',
+          500: '#c05f2a',
+          600: '#a54e1f',
+          700: '#86401b'
         }
+      },
+      fontFamily: {
+        serif: ['Georgia', '"Times New Roman"', '"Songti SC"', 'STSong', 'SimSun', 'serif'],
+        sans: ['"Helvetica Neue"', 'Arial', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif']
       }
     }
   },

@@ -71,6 +71,12 @@ CREATE VIRTUAL TABLE IF NOT EXISTS papers_fts USING fts5(
 );
 `)
 
+// ---------- 迁移：两级结构（论文=文件夹，定理=条目） ----------
+try { db.exec('ALTER TABLE papers ADD COLUMN parent_id INTEGER') } catch {}
+try { db.exec("ALTER TABLE papers ADD COLUMN section TEXT NOT NULL DEFAULT ''") } catch {}
+try { db.exec('ALTER TABLE papers ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0') } catch {}
+db.exec('CREATE INDEX IF NOT EXISTS idx_papers_parent ON papers(parent_id)')
+
 // ---------- helpers ----------
 
 export function tagsOf(paperId) {
@@ -85,6 +91,12 @@ export function getPaperFull(id) {
   if (!p) return null
   p.tags = tagsOf(id)
   p.owner = db.prepare('SELECT id, name, email, role FROM users WHERE id = ?').get(p.owner_id)
+  if (p.parent_id == null) {
+    p.results = db
+      .prepare('SELECT * FROM papers WHERE parent_id = ? ORDER BY sort_order, id')
+      .all(id)
+      .map((r) => ({ ...r, tags: tagsOf(r.id) }))
+  }
   return p
 }
 

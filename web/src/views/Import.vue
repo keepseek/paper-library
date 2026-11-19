@@ -39,9 +39,14 @@ async function submit() {
   error.value = ''
   ok.value = ''
   try {
-    const p = await api('/papers/import-md', { method: 'POST', body: { md: mdText.value } })
-    ok.value = `导入成功：《${p.title}》`
-    setTimeout(() => router.push('/paper/' + p.id), 800)
+    const r = await api('/papers/import-md', { method: 'POST', body: { md: mdText.value } })
+    if (r.imported) {
+      ok.value = `导入成功：自动识别出 ${r.imported} 条「输入/输出」记录，归入 ${r.papers?.length || 0} 篇论文`
+      setTimeout(() => router.push('/'), 800)
+    } else {
+      ok.value = `导入成功：《${r.title}》`
+      setTimeout(() => router.push('/paper/' + r.id), 800)
+    }
   } catch (e) {
     error.value = e.message
   } finally {
@@ -54,7 +59,7 @@ async function submit() {
   <div class="mx-auto max-w-3xl">
     <h1 class="mb-1 text-lg font-bold text-ink-900">导入 md 文件</h1>
     <p class="mb-4 text-sm text-ink-400">
-      同门按模板写好"输入 / 输出"等小节的 md 文件，上传即可入库。
+      上传 md 文件即可入库。两种格式都支持：① 模板格式（## 输入 / ## 输出 小节）；② 定理整理格式（每条 <b>「**输入**：… / **输出**：…」</b> 自动拆成一条定理条目，按来源论文自动归入对应的论文文件夹）。
       <button class="ml-1 text-accent-600 underline" @click="downloadTemplate">下载模板</button>
     </p>
 
