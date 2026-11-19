@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-accent-600 text-white hover:bg-accent-700;
+  }
+  .btn-ghost {
+    @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-50;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-100;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium text-ink-600;
+  }
+  .card {
+    @apply rounded-xl border border-ink-100 bg-white p-4 shadow-sm;
+  }
+  .tag {
+    @apply inline-flex items-center rounded-full bg-accent-50 px-2 py-0.5 text-xs text-accent-700;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+}
+
+/* Markdown 渲染内容 */
+.prose-md {
+  @apply text-sm leading-7 text-ink-800;
+}
+.prose-md h1, .prose-md h2, .prose-md h3 {
+  @apply mb-3 mt-6 font-semibold text-ink-900;
+}
+.prose-md h1 { @apply text-xl; }
+.prose-md h2 { @apply text-lg; }
+.prose-md h3 { @apply text-base; }
+.prose-md p { @apply my-2; }
+.prose-md ul { @apply my-2 list-disc pl-5; }
+.prose-md ol { @apply my-2 list-decimal pl-5; }
+.prose-md code {
+  @apply rounded bg-ink-50 px-1.5 py-0.5 text-[13px] text-accent-700;
+}
+.prose-md pre {
+  @apply my-3 overflow-x-auto rounded-lg bg-ink-900 p-4 text-[13px] text-ink-100;
+}
+.prose-md pre code { @apply bg-transparent p-0 text-inherit; }
+.prose-md blockquote {
+  @apply my-3 border-l-4 border-accent-100 pl-3 text-ink-600;
+}
+.prose-md a { @apply text-accent-600 underline; }
+.prose-md table { @apply my-3 w-full border-collapse text-sm; }
+.prose-md th, .prose-md td { @apply border border-ink-200 px-2 py-1; }
+.prose-md mark { @apply rounded bg-yellow-200 px-0.5; }
+.prose-md .katex-display { @apply my-3 overflow-x-auto; }
