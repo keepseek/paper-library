@@ -1,7 +1,7 @@
 # Meng's Blog 2.0 计划书
 
 > 更新：2026-11-21
-> 当前状态：**无后端静态版**完成（Agentero vault → data.json → 静态 Vue SPA），本地构建 + 测试全过，待部署
+> 当前状态：**已上线** `https://www.meng-s-blog.top/`（GitHub Pages），Agentero 协同打通（一键更新 + vault skill）
 > 一句话定位：把「粘贴一段输入/输出描述 → 找到对应论文」做成一个可检索、可积累的**论文阅读记录库**。
 
 ---
@@ -18,19 +18,24 @@
 
 ```
 Agentero vault (E:\agentero)
-  papers/<slug>/NOTES.md    ← 唯一数据源（frontmatter + ## 定理块）
+  papers/<id>/
+    ├── metadata.json   ← Agentero 原生导入（标题/作者/年份/摘要/arXiv/DOI/PDF 链接）
+    └── NOTES.md        ← 用户笔记（frontmatter venue/tags + ## 定理块）
         │
         │  node sync-vault.mjs   （本地、零依赖、直接读文件）
         ▼
   web/public/data.json      ← {papers:[{id,title,authors,year,venue,tags,
+        │                        abstract,arxiv_id,doi,pdf_url,
         │                        results:[{id,title,input,output,notes,tags}]}]}
         │  vite build
         ▼
-  web/dist/  →  静态托管（GitHub Pages / Cloudflare Pages）
+  web/dist/  →  GitHub Pages（gh-pages 分支，deploy-pages.cjs 推送）
 ```
 
 - 前端启动时 fetch 一次 `data.json`，搜索/筛选全部在客户端完成。
 - 无 API、无认证、无数据库、无服务器进程。
+- **双格式兼容**：Agentero 导入的论文（带 `metadata.json`）自动进网站；
+  定理条目只认 NOTES.md 里的 `## 定理` 块（用户手写）。
 
 ### 1.3 NOTES.md 格式（sync-vault.mjs 解析）
 
@@ -75,21 +80,24 @@ tags: ["标签1", "标签2"]
 
 ### 现状（2026-11-21）
 
-- 本地构建 + 测试全过；代码待推送。
-- 托管二选一（待用户确认）：
-  - **GitHub Pages**：免费，但私有仓库 Pages 需付费计划 → 需把仓库转公开（已确认仓库无敏感信息）。
-  - **Cloudflare Pages**：私有仓库可用，需 Cloudflare 账号并在其后台连接仓库。
+- **已上线**：`https://www.meng-s-blog.top/`（GitHub Pages，gh-pages 分支，build_type: legacy）
+- DNS：Cloudflare CNAME `www` → `keepseek.github.io`（DNS only/灰云），已切换
+- 自定义域名证书由 GitHub 自动签发（几分钟到 24h）
+- 部署脚本：`deploy-pages.cjs`（gitignore，含 token，幂等可重复运行）
 
 ### 更新流程（日常）
 
-1. 在 Agentero vault 里新增/修改论文（`papers/<slug>/NOTES.md`）。
+**一键**：双击 `update-site.bat`（同步 + 构建 + 部署，约 1 分钟）。
+或在 Agentero 里说"更新网站"（vault 的 `update-blog` skill 会执行同样流程）。
+
+手动三步：
+1. 在 Agentero vault 里新增/修改论文（导入的论文自动生成 `metadata.json`；定理条目写在 `NOTES.md`）。
 2. `node sync-vault.mjs` → 重新生成 `web/public/data.json`。
-3. `cd web && npm run build`。
-4. `node push-api.cjs "<message>"` 推送 → 托管自动部署。
+3. `cd web && npm run build` → `node deploy-pages.cjs`。
 
 ### 自定义域名
 
-- `www.meng-s-blog.top` 指向托管（GitHub Pages：仓库加 CNAME 文件 + DNS；Cloudflare Pages：Custom domains）。
+- `www.meng-s-blog.top`：仓库 CNAME 文件 + GitHub Pages cname 设置 + Cloudflare DNS CNAME（灰云）。
 
 ---
 

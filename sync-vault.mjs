@@ -1,7 +1,17 @@
-// 同步脚本：读 Agentero vault → 生成 web/public/data.json（静态前端的数据源）
+// 同步脚本 v2：读 Agentero vault → 生成 web/public/data.json（静态前端的数据源）
 // 用法：node sync-vault.mjs [vaultPath]
 //   或设环境变量 AGENTERO_VAULT
-// 无第三方依赖（自带极简 frontmatter 解析），可在用户本机直接跑。
+// 无第三方依赖，可在用户本机直接跑。
+//
+// 支持两种论文文件夹：
+//   1. Agentero 原生导入：metadata.json（title/authors/year/abstract/arxiv_id/doi/...）
+//      + NOTES.md（自动生成的摘要 + 用户手写定理块）
+//   2. 手工种子格式：NOTES.md frontmatter（title/authors/year/venue/tags）+ 定理块
+// 定理块格式（两种通用）：
+//   ## 定理标题
+//   - **输入**：...
+//   - **输出**：...
+//   - **备注**：...
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -10,7 +20,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const VAULT = process.argv[2] || process.env.AGENTERO_VAULT || 'E:/agentero'
 const OUT = path.join(__dirname, 'web/public/data.json')
 
-// ---------- 极简 frontmatter 解析（只处理本 vault 生成的格式） ----------
+// ---------- 极简 frontmatter 解析 ----------
 function parseList(val) {
   val = val.trim().replace(/^\[/, '').replace(/\]$/, '')
   const items = []
@@ -48,7 +58,7 @@ function parseFrontmatter(text) {
 }
 
 // ---------- 定理解析 ----------
-function parseTheorems(body) {
+function parseTheorems(body, slug) {
   const lines = body.split(/\r?\n/)
   const blocks = []
   let cur = null
@@ -97,32 +107,69 @@ const slugs = fs
   .filter((d) => d.isDirectory())
   .map((d) => d.name)
 
-let slug = ''
 const papers = []
 for (const s of slugs) {
-  slug = s
-  const notesPath = path.join(papersDir, s, 'NOTES.md')
-  if (!fs.existsSync(notesPath)) {
-    console.log(`skip ${s} (无 NOTES.md)`)
+  const dir = path.join(papersDir, s)
+
+  // 1. metadata.json（Agentero 原生导入才有）
+  let md = null
+  const mdPath = path.join(dir, 'metadata.json')
+  if (fs.existsSync(mdPath)) {
+    try { md = JSON.parse(fs.readFileSync(mdPath, 'utf8')) } catch (e) {
+      console.log(`warn ${s}: metadata.json 解析失败 (${e.message})`)
+    }
+  }
+
+  // 2. NOTES.md（frontmatter + 定理块）
+  let meta = {}
+  let results = []
+  const notesPath = path.join(dir, 'NOTES.md')
+  if (fs.existsSync(notesPath)) {
+    const raw = fs.readFileSync(notesPath, 'utf8')
+    const parsed = parseFrontmatter(raw)
+    meta = parsed.meta
+    results = parseTheorems(parsed.body, s)
+  }
+
+  if (!md && !fs.existsSync(notesPath)) {
+    console.log(`skip ${s} (无 metadata.json 也无 NOTES.md)`)
     continue
   }
-  const raw = fs.readFileSync(notesPath, 'utf8')
-  const { meta, body } = parseFrontmatter(raw)
-  const results = parseTheorems(body)
+
+  // 3. 合并：metadata 提供书目信息，frontmatter 提供用户整理的 venue/tags
+  const authors = Array.isArray(md?.authors)
+    ? md.authors.join(', ')
+    : (meta.authors || '')
+  const tags = [
+    ...(Array.isArray(meta.tags) ? meta.tags : []),
+    ...((md?.tags || []).filter((t) => !String(t).startsWith('@'))), // 跳过 @arxiv: 自动分类
+  ]
+  const venue = meta.venue
+    || (md?.extra && !/^\s*arXiv:/.test(md.extra) ? md.extra : '')
+    || (md?.arxiv_id ? `arXiv:${md.arxiv_id}` : '')
+
   papers.push({
     id: s,
-    title: meta.title || s,
-    authors: meta.authors || '',
-    year: meta.year ?? null,
-    venue: meta.venue || '',
-    tags: Array.isArray(meta.tags) ? meta.tags : [],
+    title: md?.title || meta.title || s,
+    authors,
+    year: md?.year ?? meta.year ?? null,
+    venue,
+    tags: [...new Set(tags)],
+    abstract: md?.abstract || '',
+    arxiv_id: md?.arxiv_id || '',
+    doi: md?.doi || '',
+    pdf_url: md?.pdf_url || '',
+    source_url: md?.source_url || '',
     results,
   })
-  console.log(`  ${s}: ${results.length} 条定理`)
+  console.log(`  ${s}: ${results.length} 条定理${md ? ' (metadata)' : ''}`)
 }
 
 // 定理继承论文标签
 for (const p of papers) for (const r of p.results) r.tags = p.tags
+
+// 排序：年份降序（无年份最后），同年按标题
+papers.sort((a, b) => (b.year || 0) - (a.year || 0) || a.title.localeCompare(b.title, 'zh'))
 
 const data = {
   generatedAt: new Date().toISOString(),

@@ -66,7 +66,7 @@ export function search(q) {
   if (!terms.length) return []
   const hits = []
   for (const p of store.papers) {
-    const pText = [p.title, p.authors, p.venue, (p.tags || []).join(' ')].join(' ').toLowerCase()
+    const pText = [p.title, p.authors, p.venue, p.abstract, (p.tags || []).join(' ')].join(' ').toLowerCase()
     const ps = scoreText(pText, terms)
     if (ps > 0) hits.push({ kind: 'paper', paper: p, score: ps })
     for (const r of p.results || []) {

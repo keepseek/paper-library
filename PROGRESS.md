@@ -1,6 +1,23 @@
 # 进度记录（Meng's Blog 重建 → 论文阅读记录库）
 
-## 当前状态：已部署 GitHub Pages，等 DNS 切换 ✅（2026-11-21）
+## 当前状态：已上线 + Agentero 协同打通 ✅（2026-11-21）
+
+### Agentero 协同（2026-11-21）
+
+**目标**：让"Agentero 里加论文 → 网站自动更新"成为真实工作流，而不只是初始迁移。
+
+- **sync-vault.mjs v2**（双格式兼容）
+  - 同时读 Agentero 原生导入的 `metadata.json`（标题/作者/年份/摘要/arXiv/DOI/PDF 链接）
+    和种子格式的 NOTES.md frontmatter（venue/tags 覆盖补充）
+  - 过滤 `@arxiv:` 自动标签；venue 回退链：frontmatter → extra → `arXiv:<id>`
+  - 新字段：abstract / arxiv_id / doi / pdf_url / source_url；按年份倒序
+  - 效果：用户自己 Agentero 导入的论文（如 `2611.24942`）现在会自动出现在网站上
+- **前端**：PaperDetail 加摘要区 + PDF/arXiv/DOI 链接；搜索文本含摘要
+- **一键更新**：`update-site.bat`（双击 = 同步 + 构建 + 部署，约 1 分钟）
+- **vault skill**：`E:\agentero\.agents\skills\update-blog\SKILL.md`
+  — 在 Agentero 里说"更新网站"即可触发同步部署；vault `AGENTS.md` 加了网站说明段
+- **数据**：3 篇论文 / 25 条定理（含用户自己的 2611.24942，0 条定理——定理要写在 NOTES.md 里）
+- 测试全过（search 12 项 / render 25 条 0 问题 / smoke 10 项），已重新部署 gh-pages
 
 ### 部署完成（2026-11-21）
 
@@ -42,9 +59,10 @@
 
 ### 待办
 
-1. **用户**：Cloudflare DNS 加 CNAME `www` → `keepseek.github.io`（DNS only/灰云）
-2. 旧站退役前轮换旧文档里的明文密码（见 PLAN-2.0.md 安全提醒）
-3. GitHub token 到期换新（当前 token 2026-11-21 换发，有效期看用户设置）
+1. GitHub 自动为自定义域名签证书（若浏览器仍提示"不安全"，等几分钟到 24h 再刷新）
+2. DNS 已切走，Vercel 上的旧项目可删
+3. 旧站退役前轮换旧文档里的明文密码（见 PLAN-2.0.md 安全提醒）
+4. GitHub token 到期换新（当前 token 2026-11-21 换发，有效期看用户设置）
 
 ---
 

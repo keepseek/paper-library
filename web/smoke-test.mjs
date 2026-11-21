@@ -50,7 +50,7 @@ const css = await get('/assets/' + cssName)
 check('GET CSS → 200', css.status === 200 && css.text.length > 10000)
 
 const data = await get('/data.json')
-check('GET /data.json → 200 JSON', data.status === 200 && JSON.parse(data.text).paperCount === 2)
+check('GET /data.json → 200 JSON', data.status === 200 && JSON.parse(data.text).paperCount === 3)
 
 // hash 路由深链：静态服务器对 /paper/x 返回 404 是预期的（hash 路由不依赖它）
 const deep = await get('/paper/dou-zhu-2022')

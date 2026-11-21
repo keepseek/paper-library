@@ -61,11 +61,19 @@ function fmtDate(s) {
         <span v-if="paper.authors">{{ paper.authors }}</span>
         <span v-if="paper.year">· {{ paper.year }}</span>
         <span v-if="paper.venue">· {{ paper.venue }}</span>
+        <a v-if="paper.pdf_url" :href="paper.pdf_url" target="_blank" class="text-accent-600 underline">PDF</a>
+        <a v-if="paper.arxiv_id" :href="`https://arxiv.org/abs/${paper.arxiv_id}`" target="_blank" class="text-accent-600 underline">arXiv:{{ paper.arxiv_id }}</a>
+        <a v-if="paper.doi" :href="`https://doi.org/${paper.doi}`" target="_blank" class="text-accent-600 underline">DOI</a>
       </div>
 
       <div class="mt-3 flex flex-wrap gap-1.5">
         <span v-for="t in paper.tags" :key="t" class="tag">{{ t }}</span>
       </div>
+
+      <section v-if="paper.abstract" class="mt-5">
+        <h2 class="section-title mb-1">摘要</h2>
+        <p class="text-sm leading-7 text-ink-600">{{ paper.abstract }}</p>
+      </section>
 
       <div class="mt-6 border-t border-ink-100 pt-4">
         <button class="btn-ghost text-xs" @click="copyBibtex">
