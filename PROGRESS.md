@@ -1,6 +1,16 @@
 # 进度记录（Meng's Blog 重建 → 论文阅读记录库）
 
-## 当前状态：无后端静态版完成，待部署 ✅（2026-11-21）
+## 当前状态：已部署 GitHub Pages，等 DNS 切换 ✅（2026-11-21）
+
+### 部署完成（2026-11-21）
+
+- 仓库 `keepseek/paper-library` 已转**公开**（转公开前已确认无敏感信息：token/密码文件 gitignore，server/ 移出仓库，文档去密码）
+- `web/dist` 已推到 **gh-pages** 分支（含 CNAME 文件）
+- GitHub Pages 已开启（deploy branch 模式，status: built）
+- 自定义域名 `www.meng-s-blog.top` 已在 GitHub 侧设置
+- **等用户操作**：Cloudflare DNS 加 CNAME `www` → `keepseek.github.io`（Proxy 选 **DNS only/灰云**），之后 https://www.meng-s-blog.top/ 生效（GitHub 自动签证书，几分钟到几小时）
+- 部署脚本：`deploy-pages.cjs`（gitignore，含 token；可重复运行，幂等）
+- 旧站退役：DNS 切走后，Vercel 上的旧项目可删
 
 ### 静态化改造（2026-11-21）
 
@@ -32,10 +42,9 @@
 
 ### 待办
 
-1. **部署**（等用户选）：GitHub Pages（仓库转公开）或 Cloudflare Pages（需 CF 账号）
-2. 自定义域名 `www.meng-s-blog.top` 指向托管
-3. 旧站退役前轮换旧文档里的明文密码（见 PLAN-2.0.md 安全提醒）
-4. GitHub token 30 天到期换新
+1. **用户**：Cloudflare DNS 加 CNAME `www` → `keepseek.github.io`（DNS only/灰云）
+2. 旧站退役前轮换旧文档里的明文密码（见 PLAN-2.0.md 安全提醒）
+3. GitHub token 到期换新（当前 token 2026-11-21 换发，有效期看用户设置）
 
 ---
 
