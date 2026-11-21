@@ -1,10 +1,24 @@
 {
-  "generatedAt": "2026-11-21T07:36:26.703Z",
+  "generatedAt": "2026-11-21T09:24:21.382Z",
   "source": "agentero",
   "vault": "E:/agentero",
-  "paperCount": 2,
+  "paperCount": 3,
   "resultCount": 25,
   "papers": [
+    {
+      "id": "2611.24942",
+      "title": "The sharp constant in a theorem of Šemrl on approximate isometries of Hilbert spaces",
+      "authors": "Aleksej Turnšek",
+      "year": 2026,
+      "venue": "arXiv:2611.24942",
+      "tags": [],
+      "abstract": "Let $H,K$ be real Hilbert spaces and $f:H\\to K$ an $ε$-isometry with $f(0)=0$. Šemrl proved that there is a linear isometry $U:H\\to K$ such that, with $P$ the orthogonal projection onto $\\text{Im}\\, U$, one has $\\|Pf(x)-Ux\\|\\leq2ε$ and $\\|(I-P)f(x)\\|\\leq\\sqrt{6ε\\|x\\|+ε^2}$ for all $x\\in H$, and asked for the optimal constant $A\\in[2ε,6ε]$ in a bound of the form $\\sqrt{A\\|x\\|+B}$. We prove that $A=6ε$, so that Šemrl's theorem is best possible. More precisely, $\\|(I-P)f(x)\\|\\leq\\sqrt{6ε\\|x\\|-3ε^2}$ for $\\|x\\|\\geq2ε$, and this bound is attained, for every value of $\\|x\\|\\geq2ε$, by an explicit $ε$-isometry $\\mathbb{R}\\to\\mathbb{R}^2$.",
+      "arxiv_id": "2611.24942",
+      "doi": "10.48550/arXiv.2611.24942",
+      "pdf_url": "https://arxiv.org/pdf/2611.24942",
+      "source_url": "https://arxiv.org/abs/2611.24942",
+      "results": []
+    },
     {
       "id": "dou-zhu-2022",
       "title": "单位圆盘上的 L¹ 等周不等式",
@@ -15,6 +29,11 @@
         "Dou, Zhu",
         "延拓算子相关结论整理"
       ],
+      "abstract": "",
+      "arxiv_id": "",
+      "doi": "",
+      "pdf_url": "",
+      "source_url": "",
       "results": [
         {
           "id": "dou-zhu-2022-1",
@@ -160,6 +179,11 @@
         "Hang, Wang, Yan",
         "延拓算子相关结论整理"
       ],
+      "abstract": "",
+      "arxiv_id": "",
+      "doi": "",
+      "pdf_url": "",
+      "source_url": "",
       "results": [
         {
           "id": "hang-wang-yan-2008-1",
