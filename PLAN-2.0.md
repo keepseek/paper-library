@@ -1,130 +1,136 @@
 # Meng's Blog 2.0 计划书
 
-> 更新：2026-11-19
-> 当前状态：M1.5（两级结构 + 电子墨水前端）已完成，渲染问题已修复
-> 一句话定位：把「粘贴一段输入/输出描述 → 找到对应论文」做成一个可检索、可积累、可分享的**论文阅读记录库**。
+> 更新：2026-11-21
+> 当前状态：**无后端静态版**完成（Agentero vault → data.json → 静态 Vue SPA），本地构建 + 测试全过，待部署
+> 一句话定位：把「粘贴一段输入/输出描述 → 找到对应论文」做成一个可检索、可积累的**论文阅读记录库**。
 
 ---
 
-## 一、渲染问题诊断与修复（已完成）
+## 一、架构（2026-11-21 转向：不搞后端）
 
-### 1.1 现象
+### 1.1 为什么
 
-25 条定理中，11 条的输出（外加 1 条备注）里的 `$$` 块级公式不渲染：
+- 原方案 Express + SQLite + JWT（M1 已完成）不再需要：无认证、无多用户、无可见性控制。
+- 数据源改为 **Agentero vault**（`E:\agentero`）：论文以 Markdown 笔记管理，用户可在 Agentero 桌面端继续录入。
+- 站点纯静态：免费静态托管（GitHub Pages / Cloudflare Pages），公开、无认证。
 
-- 原始 LaTeX 直接显示；
-- 公式被 markdown 破坏：`\|` → `|`、`\,` → `,`、成对的 `_` → `<em>`（斜体）；
-- `$` 配对错位，中文文字被误当成公式渲染（KaTeX strict 模式告警 “Unicode text character 只 used in math mode”）。
+### 1.2 数据流
 
-受影响条目：id 30、31、32、33、34、35、36、47、48、49、51（11 / 25）。
-
-### 1.2 根因
-
-渲染管线为 `marked.parse` + `marked-katex-extension` + `DOMPurify.sanitize`。
-
-`marked-katex-extension` 的**块级规则**要求 `$$` 位于块首（前面是空行或文本开头）。但笔记里 `$$` 常常**紧跟在文字行后面**（中间没有空行），于是：
-
-1. CommonMark 的 lazy continuation 把整段并入上一个段落；
-2. 块级规则不触发（`$$` 不在块首）；
-3. 行内规则又**禁止公式内换行**，同样不触发；
-4. 结果：公式不被识别，还被 markdown 二次破坏。
-
-> 已排除的“假警报”：DOMPurify 默认**允许** MathML，`<math>` 不会被剥掉；#49 里多出的 `f_i` 是 KaTeX 标准的 `<annotation encoding="application/x-tex">` 元素，属正常输出。
-
-### 1.3 修复
-
-在 `web/src/md.js` 增加预处理 `normalizeDisplayMath`：在**行首 `$$` 前补一个空行**，让块级规则能匹配。
-
-```js
-function normalizeDisplayMath(text) {
-  return text.replace(/([^\n])\n(?=[ \t]*\$\$)/g, '$1\n\n')
-}
+```
+Agentero vault (E:\agentero)
+  papers/<slug>/NOTES.md    ← 唯一数据源（frontmatter + ## 定理块）
+        │
+        │  node sync-vault.mjs   （本地、零依赖、直接读文件）
+        ▼
+  web/public/data.json      ← {papers:[{id,title,authors,year,venue,tags,
+        │                        results:[{id,title,input,output,notes,tags}]}]}
+        │  vite build
+        ▼
+  web/dist/  →  静态托管（GitHub Pages / Cloudflare Pages）
 ```
 
-修复后 25 条记录（输入 + 输出 + 备注）全部正常渲染，`render-test.mjs` 报告 **0 处问题**。
+- 前端启动时 fetch 一次 `data.json`，搜索/筛选全部在客户端完成。
+- 无 API、无认证、无数据库、无服务器进程。
 
-### 1.4 支持的语法（什么能渲染出来）
+### 1.3 NOTES.md 格式（sync-vault.mjs 解析）
+
+```markdown
+---
+title: 论文标题
+authors: "作者1, 作者2"
+year: 2022
+venue: 期刊名
+tags: ["标签1", "标签2"]
+---
+
+# 论文标题
+
+> 作者1, 作者2，期刊名
+
+## 定理 1 标题
+- **输入**：...
+- **输出**：...
+- **备注**：...
+```
+
+- 定理 tags 继承论文 tags（简化；旧库中定理级标签与论文级几乎重复）。
+- 同步脚本**直接读文件**而非 Agentero CLI catalog：手工建的文件夹不会自动进 catalog。
+- 想让 Agentero 桌面端 Library 显示这些论文：在 `papers/` 上右键 → Rescan（不会覆盖 NOTES.md）。
+
+### 1.4 客户端搜索
+
+- 分词：中文按双字滑窗（≤4 字短词整词），拉丁/数字按整词，大小写不敏感。
+- 反查：粘贴"输入/输出"描述 → 同一分词器，得分 = 命中项占比，按得分排序。
+- "输入/输出/备注"等标签词为停用词，不参与匹配。
+- 测试：`web/search-test.mjs`（12 项）、`web/render-test.mjs`（25 条 0 问题）、`web/smoke-test.mjs`（静态资源冒烟）。
+
+### 1.5 渲染管线（不变）
+
+`marked.parse` + `markedKatex({throwOnError:false, nonStandard:true})` + `DOMPurify.sanitize`，
+前置 `normalizeDisplayMath`（行首 `$$` 前补空行）。详见附录。
+
+---
+
+## 二、部署
+
+### 现状（2026-11-21）
+
+- 本地构建 + 测试全过；代码待推送。
+- 托管二选一（待用户确认）：
+  - **GitHub Pages**：免费，但私有仓库 Pages 需付费计划 → 需把仓库转公开（已确认仓库无敏感信息）。
+  - **Cloudflare Pages**：私有仓库可用，需 Cloudflare 账号并在其后台连接仓库。
+
+### 更新流程（日常）
+
+1. 在 Agentero vault 里新增/修改论文（`papers/<slug>/NOTES.md`）。
+2. `node sync-vault.mjs` → 重新生成 `web/public/data.json`。
+3. `cd web && npm run build`。
+4. `node push-api.cjs "<message>"` 推送 → 托管自动部署。
+
+### 自定义域名
+
+- `www.meng-s-blog.top` 指向托管（GitHub Pages：仓库加 CNAME 文件 + DNS；Cloudflare Pages：Custom domains）。
+
+---
+
+## 三、后续方向（静态版）
+
+1. **PWA**：离线访问、可安装到主屏（vite-plugin-pwa）。
+2. **相关定理推荐**：客户端内容相似度（数据量小，可行）。
+3. **导出**：单条/整篇导出 Markdown。
+4. **定理引用关系图**：可视化定理间依赖。
+5. **语义搜索**：客户端 embedding 太重；如需要，走 Cloudflare Workers + 向量索引的 serverless 路线。
+6. **移动端优化**。
+
+---
+
+## 四、安全提醒
+
+- 旧文档 `E:\网站\.inspect\blog-doc.txt` 里有**明文密码**（旧 Vercel/Railway/Atlas 账号），**退役旧站前务必轮换**。
+- GitHub token 在本地 `.git/config` 与 `push-api.cjs`（均已 gitignore），30 天有效，到期换新。
+- 遗留后端 `server/` 仅保留在本地（已 gitignore），不进仓库。
+
+---
+
+## 附录：渲染语法支持（2026-11-19 诊断，仍然有效）
+
+### 现象与根因
+
+25 条定理中 11 条的 `$$` 块级公式不渲染：原始 LaTeX 直接显示、`\\|`→`|`、`\\,`→`,`、`_`→斜体、`$` 配对错位把中文当公式。
+
+根因：`marked-katex-extension` 块级规则要求 `$$` 位于块首（前面是空行或文本开头），但笔记里 `$$` 常紧跟文字行 → CommonMark lazy continuation 把整段并入上一段，块级/行内规则都不触发。
+
+### 修复
+
+`web/src/md.js` 增加预处理 `normalizeDisplayMath`：行首 `$$` 前补一个空行。修复后 25 条记录全部正常渲染。
+
+### 支持的语法
 
 | 语法 | 示例 | 状态 |
 | --- | --- | --- |
-| 行内公式（单行） | `$u\in L^p$` | ✅ 正常 |
-| 块级公式 | `$$` 独占一行 + 公式 + `$$` 独占一行 | ✅ 正常（修复后紧跟文字行也可） |
-| KaTeX 命令 | `\frac \int \sum \| \, \mathbb \partial \infty \le \ge \dfrac \left \right \sqrt \Gamma \omega \lambda \xi \in \to \cap \setminus \overline \mathrm \text` | ✅ 正常 |
-| Markdown（notes 字段） | 标题、列表、加粗、斜体、链接、代码块 | ✅ 正常 |
+| 行内公式（单行） | `$u\in L^p$` | ✅ |
+| 块级公式 | `$$` 独占一行（修复后紧跟文字行也可） | ✅ |
+| KaTeX 命令 | `\frac \int \sum \, \mathbb \partial \le \dfrac \left \right \sqrt \Gamma \omega \to \cap \setminus \overline \mathrm \text` 等 | ✅ |
+| Markdown（notes） | 标题、列表、加粗、斜体、链接、代码块 | ✅ |
 
-**注意事项**
-
-- 行内公式 `$...$` 必须**单行**；不支持跨行的行内公式。
-- 块级公式的 `$$` 必须**独占一行**（开、闭各占一行）。
-- 公式内不要混用 markdown 语法（如 `_` 在公式里是下标，但公式没被正确定界时会被 markdown 当斜体）。
-- 中文不要放进 `$...$` 里（KaTeX strict 模式会告警）。
-
----
-
-## 二、后续发展路线图
-
-### M2：混合检索（BM25 + 向量）
-
-**目标**：让搜索具备**语义**能力。例如搜“最佳常数”，即使原文没有这个确切短语，也能找到讲最优常数的定理。
-
-**现状**：FTS5 trigram 分词 + BM25。擅长精确 / 部分字符串匹配，语义弱。
-
-**方案**
-
-1. 在 Oracle 免费机（24GB RAM，$0）上部署**本地 embedding 模型**：
-   - 候选：`BAAI/bge-small-zh-v1.5`（中文，小快）或 `paraphrase-multilingual-MiniLM-L12-v2`（多语言）。
-2. 对每篇论文 / 每条定理（title + one_liner + input + output + notes）生成向量。
-3. 向量存储：数据量小（几十到几百条），用 **SQLite BLOB + numpy 暴力余弦**即可，无需向量数据库。
-4. 混合检索：BM25（现有）+ 向量检索，用 **Reciprocal Rank Fusion（RRF）** 融合，`score(d) = Σ 1/(k + rank_i(d))`，k 取 60。
-
-**收益**：语义搜索、同义词召回、更好的 recall。
-**工作量**：中。
-
-### M3：PDF / RAG / PWA
-
-- **PDF 上传与解析**（可选）：当前明确“不做 PDF 解析”，这是后续方向。可用 `pdf-parse` 抽文本，数学公式识别需更重的方案。
-- **RAG**：基于论文内容的问答。依赖 M2 的 embedding + 检索增强生成（本地 LLM 或 API）。
-- **PWA**：离线访问、可安装到主屏。Vite 用 `vite-plugin-pwa`（manifest + service worker）。
-
-### 其他想法（按价值排序）
-
-1. **相关定理 / 推荐**：基于内容相似度，在论文详情页推荐相关定理。
-2. **标签体系完善**：更结构化的标签（如按算子类型、不等式类型），支持标签组合筛选。
-3. **导出**：单条 / 整篇导出为 Markdown 或 PDF。
-4. **定理引用关系图**：可视化哪些定理引用 / 依赖哪些定理。
-5. **阅读进度**：记录已读 / 未读，支持“继续上次”。
-6. **协作**：多成员评论、批注、共同维护。
-7. **移动端优化**：更小的卡片、更好的触摸体验。
-
----
-
-## 三、部署现状与待办
-
-### 现状
-
-- 本地开发完成（M1.5 + 渲染修复），代码已推 GitHub（`keepseek/paper-library`，私有）。
-- Oracle Cloud Always Free **注册待办**（用户暂时无法注册）。
-
-### 部署计划（Oracle 注册后）
-
-1. 注册 Oracle Cloud Always Free，创建 **ARM A1** 实例（4 OCPU / 24GB，Ubuntu 24.04，区域：日本（东京））。
-2. 部署应用（Node.js + SQLite，`node:sqlite` 零原生依赖）。
-3. Cloudflare：CNAME → A 记录。
-4. 下线旧站。
-
-> 详细步骤见 `PROGRESS.md`（SSH key `~/.ssh/mengs-blog`，端口 22/80/443）。
-
-### ⚠️ 安全提醒
-
-旧文档 `E:\网站\.inspect\blog-doc.txt` 里有**明文密码**：
-
-- `cute_panda:123Mengjiao`
-- `Admin@2026Secure!`
-
-**部署新站前务必轮换这两个密码。**
-
-### 其他待办
-
-- GitHub token **30 天后过期**，届时需换新 token。
-- 测试产物 `web/render-test.mjs` 可保留为开发工具，或加入 `.gitignore`。
-- `jsdom` 是 `--no-save` 装的（不在 package.json），仅测试用。
+**注意**：行内公式必须单行；`$$` 必须独占一行；公式内不要混 markdown 语法；中文不要放进 `$...$`。

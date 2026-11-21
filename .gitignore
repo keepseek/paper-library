@@ -1,5 +1,7 @@
 node_modules/
 dist/
+server/
+start.bat
 server/data/
 .npm-cache/
 .tmp/

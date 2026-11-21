@@ -1,0 +1,310 @@
+{
+  "generatedAt": "2026-11-21T07:36:26.703Z",
+  "source": "agentero",
+  "vault": "E:/agentero",
+  "paperCount": 2,
+  "resultCount": 25,
+  "papers": [
+    {
+      "id": "dou-zhu-2022",
+      "title": "单位圆盘上的 L¹ 等周不等式",
+      "authors": "Dou, Zhu",
+      "year": 2022,
+      "venue": "Adv. Math. 404 (2022) 108383",
+      "tags": [
+        "Dou, Zhu",
+        "延拓算子相关结论整理"
+      ],
+      "results": [
+        {
+          "id": "dou-zhu-2022-1",
+          "title": "（1.6）球上 Poisson 延拓最佳不等式",
+          "input": "$u\\in L^{\\frac{2(n-1)}{n-2}}(\\partial B_1)$，$n\\ge 3$。",
+          "output": "$\\tilde P_0u\\in L^{\\frac{2n}{n-2}}(B_1)$，且\n$$\n\\|\\tilde P_0u\\|_{L^{\\frac{2n}{n-2}}(B_1)}\\le n^{-\\frac{n-2}{2(n-1)}}\\,\\omega_n^{-\\frac{n-2}{2n(n-1)}}\\,\\|u\\|_{L^{\\frac{2(n-1)}{n-2}}(\\partial B_1)}.\n$$\n常数函数均为最优函数，其余极值函数由常数函数经共形变换得到。",
+          "notes": "（引自 [8]）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-2",
+          "title": "（1.9）上半空间 Poisson 延拓最佳不等式",
+          "input": "$u\\in L^{\\frac{2(n-1)}{n-2}}(\\partial\\mathbb{R}^n_+)$，$n\\ge 3$。",
+          "output": "$P_0u\\in L^{\\frac{2n}{n-2}}(\\mathbb{R}^n_+)$，且\n$$\n\\|P_0u\\|_{L^{\\frac{2n}{n-2}}(\\mathbb{R}^n_+)}\\le n^{-\\frac{n-2}{2(n-1)}}\\,\\omega_n^{-\\frac{n-2}{2n(n-1)}}\\,\\|u\\|_{L^{\\frac{2(n-1)}{n-2}}(\\partial\\mathbb{R}^n_+)}.\n$$",
+          "notes": "（(1.6) 的共形等价形式）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-3",
+          "title": "（1.10）一般分数延拓算子 $P_a$ 最佳不等式",
+          "input": "$f\\in L^{\\frac{2(n-1)}{n-2+a}}(\\partial\\mathbb{R}^n_+)$，$n\\ge 2$，$2-n<a<1$。",
+          "output": "$P_af\\in L^{\\frac{2n}{n-2+a}}(\\mathbb{R}^n_+)$，且\n$$\n\\|P_af\\|_{L^{\\frac{2n}{n-2+a}}(\\mathbb{R}^n_+)}\\le C_1(n,a,p)\\,\\|f\\|_{L^{\\frac{2(n-1)}{n-2+a}}(\\partial\\mathbb{R}^n_+)}.\n$$\n等号成立当且仅当 $f(y)=c_{n,a}\\left(\\dfrac{d}{|y-y_0|^2+d^2}\\right)^{\\frac{n-2+a}{2}}$（$c_{n,a}$ 常数，$d>0$，$y_0\\in\\partial\\mathbb{R}^n_+$）。$a=1$ 时由 Dou–Zhu [7] 建立。",
+          "notes": "（Chen [6]）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-4",
+          "title": "（1.12）球上分数延拓算子 $\\tilde P_a$ 最佳不等式",
+          "input": "$g\\in L^{\\frac{2(n-1)}{n+a-2}}(\\partial B_1)$。",
+          "output": "$\\tilde P_ag\\in L^{\\frac{2n}{n+a-2}}(B_1)$，且\n$$\n\\|\\tilde P_ag\\|_{L^{\\frac{2n}{n+a-2}}(B_1)}\\le S_{n,a}\\,\\|g\\|_{L^{\\frac{2(n-1)}{n+a-2}}(\\partial B_1)},\n$$\n最佳常数 $S_{n,a}$ 只依赖 $n,a$；常数函数为最优函数，极值函数除相差共形变换外唯一。",
+          "notes": "（(1.10) 经 Möbius 变换的等价形式）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-5",
+          "title": "（1.13）指数型延拓不等式",
+          "input": "$F\\in C^0(\\partial B_1)$（连续），$n\\ge 2$。",
+          "output": "$e^{\\tilde I_n+\\tilde P_{2-n}F}\\in L^n(B_1)$，且\n$$\n\\|e^{\\tilde I_n+\\tilde P_{2-n}F}\\|_{L^n(B_1)}\\le C_n\\,\\|e^{F}\\|_{L^{n-1}(\\partial B_1)},\n$$\n其中 $\\tilde I_n=2\\left.\\dfrac{d\\tilde P_a1}{d\\epsilon}\\right|_{\\epsilon=0}$（$\\epsilon=n-2+a$）。",
+          "notes": "（Chen，令 $a\\to 2-n$）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-6",
+          "title": "定理 1.1 (i) 一般 Carleman 不等式",
+          "input": "$u\\in L^1(\\partial B_1)$。",
+          "output": "$e^{\\tilde P_0u}\\in L^2(B_1)$，且\n$$\n\\int_{B_1}e^{2\\tilde P_0u}\\,dx\\le \\frac{1}{4\\pi}\\left(\\int_{\\partial B_1}e^{u}\\,dS\\right)^2.\n$$\n（定理 1.1 (ii)：等号成立当且仅当 $u=c$ 或 $u=-2\\ln|x-x_0|+c$，$x_0\\in\\mathbb{R}^2\\setminus B_1$。）",
+          "notes": "",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-7",
+          "title": "引理 2.2",
+          "input": "$u\\in L^\\infty(\\partial B_1)$。",
+          "output": "$e^{\\tilde P_0u}\\in L^2(B_1)$，且\n$$\n\\|e^{\\tilde P_0u}\\|_{L^2(B_1)}\\le\\frac{1}{4\\pi}\\,\\|e^{u}\\|_{L^1(\\partial B_1)}.\n$$\n$\\dfrac{1}{4\\pi}$ 为最佳常数（对常数函数取等）。",
+          "notes": "（定理 1.1 (i) 的 $L^\\infty$ 情形）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-8",
+          "title": "命题 3.2（1）",
+          "input": "$f\\in L^p(\\partial\\mathbb{R}^2_+)$，$1<p\\le\\infty$。",
+          "output": "$P_0f\\in L^{2p}(\\mathbb{R}^2_+)$，且 $\\|P_0f\\|_{L^{2p}(\\mathbb{R}^2_+)}\\le C(p)\\|f\\|_{L^p(\\partial\\mathbb{R}^2_+)}$。",
+          "notes": "",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-9",
+          "title": "命题 3.2（2）",
+          "input": "$f\\in L^p(\\partial B_1)$，$1<p\\le\\infty$。",
+          "output": "$\\tilde P_0f\\in L^{2p}(B_1)$，且 $\\|\\tilde P_0f\\|_{L^{2p}(B_1)}\\le C(p)\\|f\\|_{L^p(\\partial B_1)}$。",
+          "notes": "",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-10",
+          "title": "命题 3.3（1）",
+          "input": "$g\\in L^p(\\mathbb{R}^n_+)$，$1\\le p<2$。",
+          "output": "$Tg\\in L^{\\frac{p}{2-p}}(\\partial\\mathbb{R}^n_+)$，且 $\\|Tg\\|_{L^{\\frac{p}{2-p}}(\\partial\\mathbb{R}^n_+)}\\le C_1(p)\\|g\\|_{L^p(\\mathbb{R}^n_+)}$。",
+          "notes": "（共轭算子）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-11",
+          "title": "命题 3.3（2）",
+          "input": "$g\\in L^p(B_1)$，$1\\le p<2$。",
+          "output": "$\\tilde Tg\\in L^{\\frac{p}{2-p}}(\\partial B_1)$，且 $\\|\\tilde Tg\\|_{L^{\\frac{p}{2-p}}(\\partial B_1)}\\le C_1(p)\\|g\\|_{L^p(B_1)}$。",
+          "notes": "（共轭算子）",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "dou-zhu-2022-12",
+          "title": "定理 3.1",
+          "input": "$u\\in L^1(\\partial B_1)$ 是最佳不等式 (1.3) 的极值函数。",
+          "output": "$u\\in C^\\gamma(\\partial B_1)$，其中 $0<\\gamma<1$（进而 $\\tilde P_0u\\in C^\\infty(B_1)\\cap C^0(\\overline{B_1})$，在 $B_1$ 内调和，边界值逐点等于 $u$）。",
+          "notes": "",
+          "tags": [
+            "Dou, Zhu",
+            "延拓算子相关结论整理"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hang-wang-yan-2008",
+      "title": "调和函数的最佳积分不等式",
+      "authors": "Hang, Wang, Yan",
+      "year": 2008,
+      "venue": "CPAM 61 (2008) 54–95",
+      "tags": [
+        "Hang, Wang, Yan",
+        "延拓算子相关结论整理"
+      ],
+      "results": [
+        {
+          "id": "hang-wang-yan-2008-1",
+          "title": "命题 2.1（1）",
+          "input": "$f\\in L^1(\\mathbb{R}^{n-1})$。",
+          "output": "$Pf\\in L^{\\frac{n}{n-1}}_W(\\mathbb{R}^n_+)$（弱型），且 $|Pf|_{L^{\\frac{n}{n-1}}_W(\\mathbb{R}^n_+)}\\le c(n)|f|_{L^1(\\mathbb{R}^{n-1})}$。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-2",
+          "title": "命题 2.1（2）",
+          "input": "$f\\in L^p(\\mathbb{R}^{n-1})$，$1<p\\le\\infty$。",
+          "output": "$Pf\\in L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)$（强型），且 $|Pf|_{L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)}\\le c(n,p)|f|_{L^p(\\mathbb{R}^{n-1})}$。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-3",
+          "title": "命题 2.1（3）",
+          "input": "$f\\in L^{p,\\frac{np}{n-1}}(\\mathbb{R}^{n-1})$，$1<p<\\infty$。",
+          "output": "$Pf\\in L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)$，且 $|Pf|_{L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)}\\le c(n,p)|f|_{L^{p,\\frac{np}{n-1}}(\\mathbb{R}^{n-1})}$。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-4",
+          "title": "推论 2.1",
+          "input": "$f\\in L^p(\\mathbb{R}^{n-1})$，$1\\le p<\\infty$。",
+          "output": "算子 $P:L^p(\\mathbb{R}^{n-1})\\to L^q_{\\mathrm{loc}}(\\mathbb{R}^n_+)$ 是**紧**的，对一切 $1\\le q<\\dfrac{np}{n-1}$。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-5",
+          "title": "命题 2.2",
+          "input": "$u\\in L^p(\\mathbb{R}^n_+)$，$1\\le p<n$。",
+          "output": "$Tu\\in L^{\\frac{(n-1)p}{n-p}}(\\mathbb{R}^{n-1})$，且\n$$\n|Tu|_{L^{\\frac{(n-1)p}{n-p}}(\\mathbb{R}^{n-1})}\\le c(n,p)\\,|u|_{L^p(\\mathbb{R}^n_+)}.\n$$",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-6",
+          "title": "定理 1.1",
+          "input": "$f\\in L^{\\frac{2(n-1)}{n-2}}(\\mathbb{R}^{n-1})$，$n\\ge 3$。",
+          "output": "$Pf\\in L^{\\frac{2n}{n-2}}(\\mathbb{R}^n_+)$，且\n$$\n|Pf|_{L^{\\frac{2n}{n-2}}(\\mathbb{R}^n_+)}\\le n^{-\\frac{n-2}{2(n-1)}}\\omega_n^{-\\frac{n-2}{2n(n-1)}}|f|_{L^{\\frac{2(n-1)}{n-2}}(\\mathbb{R}^{n-1})}.\n$$\n等号成立当且仅当 $f(\\xi)=\\dfrac{c}{(\\lambda^2+|\\xi-\\xi_0|^2)^{\\frac{n-2}{2}}}$（$c$ 常数，$\\lambda>0$，$\\xi_0\\in\\mathbb{R}^{n-1}$）。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-7",
+          "title": "定理 1.3（1）",
+          "input": "$f_i$ 是 (1.8) 的极值序列，$n\\ge 2$，$1<p<\\infty$。",
+          "output": "取子序列后存在 $\\lambda_i>0$、$\\zeta_i\\in\\mathbb{R}^{n-1}$，使得 $f_i^{\\lambda_i,\\zeta_i}\\to f$ 于 $L^p(\\mathbb{R}^{n-1})$；至少存在一个极值函数。乘以非零常数后，每个极值函数非负、关于某点径向对称、沿径向严格递减，且满足\n$$\nf(\\xi)^{p-1}=\\int_{\\mathbb{R}^n_+}P(x,\\xi)(Pf)(x)^{\\frac{np}{n-1}-1}\\,dx. \\qquad (1.9)\n$$",
+          "notes": "（变分问题 $c_{n,p}=\\sup\\{|Pf|_{L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)}:|f|_{L^p(\\mathbb{R}^{n-1})}=1\\}$）",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-8",
+          "title": "定理 1.3（2）",
+          "input": "$n\\ge 3$，$p=\\dfrac{2(n-1)}{n-2}$。",
+          "output": "任意极值函数 $f(\\xi)=\\pm c(n)\\left(\\dfrac{\\lambda}{\\lambda^2+|\\xi-\\xi_0|^2}\\right)^{\\frac{n-2}{2}}$，且 $c_{n,\\frac{2(n-1)}{n-2}}=n^{-\\frac{n-2}{2(n-1)}}\\omega_n^{-\\frac{n-2}{2n(n-1)}}$。",
+          "notes": "（变分问题 $c_{n,p}=\\sup\\{|Pf|_{L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)}:|f|_{L^p(\\mathbb{R}^{n-1})}=1\\}$）",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-9",
+          "title": "定理 1.3（3）",
+          "input": "$n\\ge 3$，$p=\\dfrac{2(n-1)}{n}$。",
+          "output": "任意极值函数 $f(\\xi)=\\pm c(n)\\left(\\dfrac{\\lambda}{\\lambda^2+|\\xi-\\xi_0|^2}\\right)^{n/2}$，且\n$$\nc_{n,\\frac{2(n-1)}{n}}=\\frac{1}{\\sqrt{2(n-2)\\,4\\sqrt{\\pi}}}\\left(\\frac{(n-2)!}{\\Gamma\\left(\\frac{n-1}{2}\\right)}\\right)^{\\frac{1}{2(n-1)}}.\n$$",
+          "notes": "（变分问题 $c_{n,p}=\\sup\\{|Pf|_{L^{\\frac{np}{n-1}}(\\mathbb{R}^n_+)}:|f|_{L^p(\\mathbb{R}^{n-1})}=1\\}$）",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-10",
+          "title": "定理 1.4",
+          "input": "$f\\in L^p(\\mathbb{R}^{n-1})$ 非负、不恒为零，满足 (1.9)，$n\\ge 2$，$1<p<\\infty$。",
+          "output": "$f\\in C^\\infty(\\mathbb{R}^{n-1})$，且关于某点径向对称、沿径向方向严格递减。",
+          "notes": "",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-11",
+          "title": "定理 5.1",
+          "input": "$f\\in L^p_{\\mathrm{loc}}(\\mathbb{R}^{n-1})$ 非负、不恒为零，满足 (1.9)，$n\\ge 2$，$1<p<\\infty$。",
+          "output": "$f\\in C^\\infty(\\mathbb{R}^{n-1})$；若进一步 $f\\in L^p(\\mathbb{R}^{n-1})$，则 $f(\\xi)\\to 0$ 当 $|\\xi|\\to\\infty$。",
+          "notes": "（局部正则性）",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-12",
+          "title": "定理 6.1",
+          "input": "$f\\in L^p(\\mathbb{R}^{n-1})$ 非负、不恒为零，满足 (1.9)，$1<p<\\infty$，$n\\ge 2$。",
+          "output": "$f\\in C^\\infty(\\mathbb{R}^{n-1})$，且关于某点径向对称、沿径向方向严格递减。",
+          "notes": "（径向对称性）",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        },
+        {
+          "id": "hang-wang-yan-2008-13",
+          "title": "命题 6.1",
+          "input": "$f\\in L^{\\frac{2(n-1)}{n-2}}_{\\mathrm{loc}}(\\mathbb{R}^{n-1})$ 非负、不恒为零，满足",
+          "output": "对某个 $\\lambda>0$、$\\xi_0\\in\\mathbb{R}^{n-1}$，$f(\\xi)=c(n)\\left(\\dfrac{\\lambda}{\\lambda^2+|\\xi-\\xi_0|^2}\\right)^{\\frac{n-2}{2}}$。",
+          "notes": "（特殊幂次 $p=\\dfrac{2(n-1)}{n-2}$ 的分类）\n$$\nf(\\xi)^{\\frac{n}{n-2}}=\\int_{\\mathbb{R}^n_+}P(x,\\xi)(Pf)(x)^{\\frac{n+2}{n-2}}\\,dx,\n$$\n$n\\ge 3$。",
+          "tags": [
+            "Hang, Wang, Yan",
+            "延拓算子相关结论整理"
+          ]
+        }
+      ]
+    }
+  ]
+}
