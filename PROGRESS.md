@@ -1,6 +1,14 @@
 # 进度记录（Meng's Blog 重建 → 论文阅读记录库）
 
-## 当前状态：已上线 + Agentero 协同 + PDF 库/快速赢 ✅（2026-11-22）
+## 当前状态：已上线 + Agentero 协同 + PDF 库/快速赢 + 摘要公式修复 ✅（2026-11-22）
+
+### 摘要公式渲染修复（2026-11-22）
+
+**问题**：用户反馈论文详情页摘要里的 LaTeX（`$H,K$`、`$f:H\to K$` 等）显示为原始文本乱码。
+**根因**：摘要用 `{{ paper.abstract }}` 纯文本插值，没走 KaTeX 渲染管线（定理的 input/output 都走了，唯独摘要漏了）。
+**修复**：`PaperDetail.vue` 摘要改为 `<div class="prose-md" v-html="renderMarkdown(paper.abstract)"></div>`，与定理同管线（marked + markedKatex + DOMPurify）。
+**验证**：新增 `web/abstract-test.mjs`——把 data.json 里每篇摘要过一遍渲染管线，检查 `katex-error` 和残留裸 `$`；2611.24942 摘要（大量行内公式）渲染为 KaTeX HTML，0 问题。
+**部署**：重新构建（bundle `index-BECPuRIJ.js`）+ 推 gh-pages + 推 main（见下方部署记录）。
 
 ### PDF 库 + 第一梯队功能（2026-11-22）
 
