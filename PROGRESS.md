@@ -23,7 +23,9 @@
   - arXiv HTML 版链接（PaperDetail meta 行 + 本地 PDF 区）
 - **导航**：App.vue 加「PDF 库」入口（`router-link-active` 高亮）
 - **测试**：search 12/12、render 25/0、smoke 10/10 全过；生产构建 JS 464KB / gzip 152KB
-- **待部署**：代码已构建到 `web/dist`，待 `node deploy-pages.cjs`（或双击 `update-site.bat`）推 gh-pages
+- **已部署**（2026-11-22）：`node deploy-pages.cjs` 推 gh-pages（commit `ccb0083`）+ `node push-api.cjs` 推 main（commit `0c820ce`）。线上 `www.meng-s-blog.top` 已验证为新代码（data.json `pdfCount:1`、bundle 含 PDF 库/已读/导出/标签云）。
+  - 部署时 `api.github.com` 网络抖动（脚本 5 次重试扛过）；`cname` PATCH 返回 404（非致命，自定义域名早已配置，站点正常服务）。
+  - 自定义域名证书仍由 GitHub 签发中（浏览器若提示"不安全"等几分钟到 24h，见 HANDOVER 待办 3）。
 
 ### Agentero 协同（2026-11-21）
 

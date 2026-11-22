@@ -102,7 +102,7 @@ function fmtDate(s) {
 
       <section v-if="paper.abstract" class="mt-5">
         <h2 class="section-title mb-1">摘要</h2>
-        <p class="text-sm leading-7 text-ink-600">{{ paper.abstract }}</p>
+        <div class="prose-md" v-html="renderMarkdown(paper.abstract)"></div>
       </section>
 
       <section v-if="paper.local_pdfs?.length" class="mt-5">
