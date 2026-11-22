@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { store, allTags, search } from '../data.js'
+import { store, allTags, search, stats, tagCounts } from '../data.js'
 import PaperCard from '../components/PaperCard.vue'
 
 const query = ref('')
@@ -8,6 +8,8 @@ const fTag = ref('')
 const results = ref(null) // null = 未搜索，显示列表
 
 const tags = computed(() => allTags())
+const st = computed(() => stats())
+const tagCloud = computed(() => tagCounts())
 
 const filteredPapers = computed(() => {
   if (!fTag.value) return store.papers
@@ -70,6 +72,28 @@ function fmtDate(s) {
       </div>
     </div>
 
+    <!-- 库统计 -->
+    <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="card !p-3">
+        <div class="font-serif text-2xl font-bold text-ink-900">{{ st.papers }}</div>
+        <div class="text-xs text-ink-400">论文</div>
+      </div>
+      <div class="card !p-3">
+        <div class="font-serif text-2xl font-bold text-ink-900">{{ st.theorems }}</div>
+        <div class="text-xs text-ink-400">定理</div>
+      </div>
+      <div class="card !p-3">
+        <div class="font-serif text-2xl font-bold text-ink-900">{{ st.pdfs }}</div>
+        <div class="text-xs text-ink-400">本地 PDF</div>
+      </div>
+      <div class="card !p-3">
+        <div class="font-serif text-2xl font-bold text-accent-600">
+          {{ st.read }}<span class="text-sm text-ink-300"> / {{ st.papers }}</span>
+        </div>
+        <div class="text-xs text-ink-400">已读</div>
+      </div>
+    </div>
+
     <!-- 搜索结果 -->
     <template v-if="results !== null">
       <p class="mb-3 text-sm text-ink-600">
@@ -127,6 +151,19 @@ function fmtDate(s) {
           <option value="">全部标签</option>
           <option v-for="t in tags" :key="t" :value="t">{{ t }}</option>
         </select>
+      </div>
+
+      <!-- 标签云：点击过滤，再点取消 -->
+      <div v-if="tagCloud.length" class="mb-4 flex flex-wrap gap-1.5">
+        <button
+          v-for="[t, c] in tagCloud"
+          :key="t"
+          class="tag cursor-pointer transition-colors hover:border-accent-300 hover:text-accent-700"
+          :class="{ '!border-accent-400 !bg-accent-50 !text-accent-700': fTag === t }"
+          @click="fTag = fTag === t ? '' : t"
+        >
+          {{ t }} <span class="text-ink-300">{{ c }}</span>
+        </button>
       </div>
 
       <p v-if="store.error" class="py-10 text-center text-sm text-red-600">{{ store.error }}</p>

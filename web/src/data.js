@@ -78,3 +78,51 @@ export function search(q) {
   hits.sort((a, b) => b.score - a.score || a.paper.id.localeCompare(b.paper.id))
   return hits
 }
+
+/* ---------- PDF 库 + 统计 ---------- */
+
+// 字节 → 人类可读
+export function fmtBytes(n) {
+  if (n === null || n === undefined || isNaN(n)) return ''
+  if (n < 1024) return n + ' B'
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB'
+  return (n / (1024 * 1024)).toFixed(2) + ' MB'
+}
+
+// 每篇论文的 PDF 情况（供 PDF 库目录页用）。
+// 一篇论文可同时有本地 PDF 和外链；这里都保留，source 只用于筛选归类。
+export function pdfEntries() {
+  return store.papers.map((p) => {
+    const local = p.local_pdfs || []
+    const external = p.pdf_url || ''
+    const externalKind = external
+      ? (/arxiv\.org/i.test(external) ? 'arxiv' : /doi\.org/i.test(external) ? 'doi' : 'link')
+      : ''
+    return {
+      paper: p,
+      local,
+      hasLocal: local.length > 0,
+      external,
+      hasExternal: !!external,
+      externalKind,
+      size: local.reduce((n, f) => n + f.size, 0),
+    }
+  })
+}
+
+// 库统计（客户端从 store.papers 聚合，始终与列表一致）
+export function stats() {
+  const papers = store.papers
+  const theorems = papers.reduce((n, p) => n + (p.results?.length || 0), 0)
+  const pdfs = papers.reduce((n, p) => n + (p.local_pdfs?.length || 0), 0)
+  const pdfSize = papers.reduce((n, p) => n + (p.local_pdfs || []).reduce((m, f) => m + f.size, 0), 0)
+  const read = papers.filter((p) => p.is_read).length
+  return { papers: papers.length, theorems, pdfs, pdfSize, read, unread: papers.length - read }
+}
+
+// 标签 → 论文数，按数量降序（供标签云用）
+export function tagCounts() {
+  const m = new Map()
+  for (const p of store.papers) for (const t of p.tags || []) m.set(t, (m.get(t) || 0) + 1)
+  return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh'))
+}

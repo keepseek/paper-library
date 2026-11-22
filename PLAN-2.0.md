@@ -103,12 +103,25 @@ tags: ["标签1", "标签2"]
 
 ## 三、后续方向（静态版）
 
-1. **PWA**：离线访问、可安装到主屏（vite-plugin-pwa）。
-2. **相关定理推荐**：客户端内容相似度（数据量小，可行）。
-3. **导出**：单条/整篇导出 Markdown。
+### 已完成（2026-11-22）
+
+- **PDF 库**（`/pdfs`）：目录式列出所有论文的 PDF 情况——本地 PDF（文件名+大小）、arXiv/DOI 外链、缺 PDF 提示；带统计/搜索/筛选/排序。本地 PDF 暂只登记、不托管（托管后续开放）。
+- **已读/未读徽章**：读 `metadata.json` 的 `is_read`，Agentero 里标已读 → 网站自动显示。
+- **标签云浏览**：Home 点标签过滤、再点取消。
+- **统计概览**：Home 顶部论文 / 定理 / 本地 PDF / 已读。
+- **导出 Markdown**：单条定理 / 整篇，下载 + 复制（`src/export.js`）。
+- **arXiv HTML 版链接**：详情页 meta 行 + 本地 PDF 区。
+
+### 待做
+
+1. **本地 PDF 托管**：把 `papers/<id>/*.pdf` 拷到 `web/public/pdfs/` 并在 PDF 库可点（注意仓库公开 + 体积，建议 `web/public/pdfs/` 进 .gitignore）。
+2. **PWA**：离线访问、可安装到主屏（vite-plugin-pwa）。
+3. **相关定理推荐**：客户端内容相似度（数据量小，可行）。
 4. **定理引用关系图**：可视化定理间依赖。
 5. **语义搜索**：客户端 embedding 太重；如需要，走 Cloudflare Workers + 向量索引的 serverless 路线。
 6. **移动端优化**。
+7. **深色模式**：Tailwind `dark:` 变体，一键切换。
+8. **更新提示**：localStorage 记上次 `generatedAt`，高亮新增论文。
 
 ---
 

@@ -95,6 +95,24 @@ function parseTheorems(body, slug) {
   })
 }
 
+// ---------- PDF 扫描 ----------
+// 只扫论文目录顶层的 *.pdf（不含 source/ 等子目录），记录文件名 + 字节大小。
+// 用于「PDF 库」目录页：先只建目录，不托管文件到网站。
+function scanPdfs(dir) {
+  const out = []
+  let entries = []
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }) } catch { return out }
+  for (const e of entries) {
+    if (e.isFile() && e.name.toLowerCase().endsWith('.pdf')) {
+      try {
+        const size = fs.statSync(path.join(dir, e.name)).size
+        out.push({ file: e.name, size })
+      } catch { /* 读不到大小就跳过 */ }
+    }
+  }
+  return out
+}
+
 // ---------- 主流程 ----------
 const papersDir = path.join(VAULT, 'papers')
 if (!fs.existsSync(papersDir)) {
@@ -160,6 +178,10 @@ for (const s of slugs) {
     doi: md?.doi || '',
     pdf_url: md?.pdf_url || '',
     source_url: md?.source_url || '',
+    html_url: md?.html_url || '',
+    is_read: !!md?.is_read,
+    added_at: md?.added_at || '',
+    local_pdfs: scanPdfs(dir),
     results,
   })
   console.log(`  ${s}: ${results.length} 条定理${md ? ' (metadata)' : ''}`)
@@ -177,10 +199,13 @@ const data = {
   vault: VAULT,
   paperCount: papers.length,
   resultCount: papers.reduce((n, p) => n + p.results.length, 0),
+  pdfCount: papers.reduce((n, p) => n + p.local_pdfs.length, 0),
+  pdfTotalSize: papers.reduce((n, p) => n + p.local_pdfs.reduce((m, f) => m + f.size, 0), 0),
+  readCount: papers.filter((p) => p.is_read).length,
   papers,
 }
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true })
 fs.writeFileSync(OUT, JSON.stringify(data, null, 2))
 console.log(`\n✓ ${OUT}`)
-console.log(`  ${data.paperCount} 篇论文 / ${data.resultCount} 条定理`)
+console.log(`  ${data.paperCount} 篇论文 / ${data.resultCount} 条定理 / ${data.pdfCount} 个本地 PDF`)

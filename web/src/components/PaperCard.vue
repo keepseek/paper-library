@@ -8,9 +8,17 @@ defineProps({
 
 <template>
   <RouterLink :to="`/paper/${paper.id}`" class="card block transition-shadow hover:shadow-md">
-    <h3 class="font-serif text-[15px] font-semibold leading-snug text-ink-900 hover:text-accent-600">
-      {{ paper.title }}
-    </h3>
+    <div class="flex items-start justify-between gap-2">
+      <h3 class="font-serif text-[15px] font-semibold leading-snug text-ink-900 hover:text-accent-600">
+        {{ paper.title }}
+      </h3>
+      <span
+        class="badge shrink-0"
+        :class="paper.is_read ? 'bg-ink-900 text-paper-50' : 'border border-ink-200 bg-paper-100 text-ink-400'"
+      >
+        {{ paper.is_read ? '已读' : '未读' }}
+      </span>
+    </div>
     <p v-if="paper.authors" class="mt-1.5 text-xs text-ink-500">
       {{ paper.authors }}
       <template v-if="paper.year"> · {{ paper.year }}</template>

@@ -1,9 +1,12 @@
 {
-  "generatedAt": "2026-11-21T09:24:21.382Z",
+  "generatedAt": "2026-11-22T00:57:45.959Z",
   "source": "agentero",
   "vault": "E:/agentero",
   "paperCount": 3,
   "resultCount": 25,
+  "pdfCount": 1,
+  "pdfTotalSize": 421309,
+  "readCount": 0,
   "papers": [
     {
       "id": "2611.24942",
@@ -17,6 +20,15 @@
       "doi": "10.48550/arXiv.2611.24942",
       "pdf_url": "https://arxiv.org/pdf/2611.24942",
       "source_url": "https://arxiv.org/abs/2611.24942",
+      "html_url": "https://arxiv.org/html/2611.24942",
+      "is_read": false,
+      "added_at": "2026-11-21T07:37:00.397Z",
+      "local_pdfs": [
+        {
+          "file": "2611.24942.pdf",
+          "size": 421309
+        }
+      ],
       "results": []
     },
     {
@@ -34,6 +46,10 @@
       "doi": "",
       "pdf_url": "",
       "source_url": "",
+      "html_url": "",
+      "is_read": false,
+      "added_at": "",
+      "local_pdfs": [],
       "results": [
         {
           "id": "dou-zhu-2022-1",
@@ -184,6 +200,10 @@
       "doi": "",
       "pdf_url": "",
       "source_url": "",
+      "html_url": "",
+      "is_read": false,
+      "added_at": "",
+      "local_pdfs": [],
       "results": [
         {
           "id": "hang-wang-yan-2008-1",

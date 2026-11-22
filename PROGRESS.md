@@ -1,6 +1,29 @@
 # 进度记录（Meng's Blog 重建 → 论文阅读记录库）
 
-## 当前状态：已上线 + Agentero 协同打通 ✅（2026-11-21）
+## 当前状态：已上线 + Agentero 协同 + PDF 库/快速赢 ✅（2026-11-22）
+
+### PDF 库 + 第一梯队功能（2026-11-22）
+
+**目标**：加一个「PDF 库」页面（目录式，先不托管本地 PDF），并上第一梯队快速赢。用户拍板：本地 PDF 先只建目录、托管以后再说。
+
+- **数据层（sync-vault.mjs）**
+  - 扫每个 `papers/<id>/` 顶层 `*.pdf`（不含 `source/`），记录 `file`/`size` → 论文 `local_pdfs`
+  - 带出 metadata.json 里原来被丢掉的字段：`is_read` / `html_url` / `added_at`
+  - 顶层新增 `pdfCount` / `pdfTotalSize` / `readCount`
+- **PDF 库页面（`/pdfs`，`views/PdfLibrary.vue`）**
+  - 统计条：本地 PDF 数 / 本地总大小 / 有外链 / 缺 PDF
+  - 搜索（标题/作者/标签）+ 筛选（来源/年份/标签）+ 排序（年份/大小/标题）
+  - 卡片：本地 PDF（文件名+大小，标「未托管」）、arXiv/DOI 外链（可点）、无 PDF 提示
+  - 本地 PDF 暂只登记、不托管到网站（托管功能后续开放）
+- **第一梯队快速赢**
+  - 已读/未读徽章（PaperCard + PaperDetail，读 `is_read`）
+  - 标签云浏览（Home：点标签过滤、再点取消，带论文数）
+  - 统计概览（Home 顶部：论文 / 定理 / 本地 PDF / 已读）
+  - 导出 Markdown（PaperDetail：整篇下载/复制 + 单条定理下载；新增 `src/export.js`）
+  - arXiv HTML 版链接（PaperDetail meta 行 + 本地 PDF 区）
+- **导航**：App.vue 加「PDF 库」入口（`router-link-active` 高亮）
+- **测试**：search 12/12、render 25/0、smoke 10/10 全过；生产构建 JS 464KB / gzip 152KB
+- **待部署**：代码已构建到 `web/dist`，待 `node deploy-pages.cjs`（或双击 `update-site.bat`）推 gh-pages
 
 ### Agentero 协同（2026-11-21）
 

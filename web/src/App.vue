@@ -11,8 +11,11 @@ import { RouterLink } from 'vue-router'
           <span class="text-xs tracking-widest text-ink-400">论文阅读记录库</span>
         </RouterLink>
         <nav class="flex items-center gap-1 text-sm">
-          <RouterLink to="/" class="rounded-md px-3 py-1.5 text-ink-600 hover:bg-paper-100 hover:text-ink-900">
+          <RouterLink to="/" class="rounded-md px-3 py-1.5 text-ink-600 hover:bg-paper-100 hover:text-ink-900 router-link-active:!bg-paper-100 router-link-active:!text-ink-900 router-link-active:font-medium">
             论文库
+          </RouterLink>
+          <RouterLink to="/pdfs" class="rounded-md px-3 py-1.5 text-ink-600 hover:bg-paper-100 hover:text-ink-900 router-link-active:!bg-paper-100 router-link-active:!text-ink-900 router-link-active:font-medium">
+            PDF 库
           </RouterLink>
         </nav>
       </div>
