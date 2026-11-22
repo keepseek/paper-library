@@ -1,49 +1,36 @@
-# Meng's Blog · 论文库
+# Meng's Blog · 论文阅读记录库
 
-多用户论文阅读记录库。域名：`meng-s-blog.top`
+粘贴一段"输入/输出"描述 → 反查对应论文和定理条目。
+**纯静态站点，无后端、无认证**。数据源：Agentero vault。
 
-## 功能
+- 线上：`https://www.meng-s-blog.top/`（GitHub Pages）
+- 接手开发请先读 **`HANDOVER.md`**（架构/格式/部署/环境坑），设计细节见 `PLAN-2.0.md`，历史见 `PROGRESS.md`。
 
-- 账号体系：所有者 + 成员（邀请码注册），成员可管理自己的论文
-- 论文结构化记录：标题/作者/arXiv/DOI/PDF 链接 + **输入 / 输出**（一等公民字段）+ 主要结果/方法/笔记（Markdown + LaTeX）
-- md 文件导入：同门按模板写好 md 上传即入库（网站不解析 PDF）
-- 全文搜索：SQLite FTS5 trigram，中文子串匹配，字段加权（输入/输出权重最高）
-- 可见性：仅自己 / 同门可见 / 公开
+## 数据流
+
+```
+Agentero vault (E:\agentero)  →  sync-vault.mjs  →  web/public/data.json  →  vite build  →  GitHub Pages
+```
+
+## 日常更新
+
+1. 在 Agentero 里导入论文、在 `NOTES.md` 写定理条目（`## 标题` + `- **输入**：/ - **输出**：/ - **备注**：`）
+2. 双击 `update-site.bat`（同步 + 构建 + 部署，约 1 分钟）
 
 ## 目录
 
 ```
-server/   Express + node:sqlite（零原生依赖）
-web/      Vue 3 + Vite + TailwindCSS + KaTeX
+sync-vault.mjs    同步脚本（vault → data.json，零依赖）
+update-site.bat   一键更新
+deploy-pages.cjs  部署到 GitHub Pages（gitignore，含 token）
+push-api.cjs      推 main 分支（gitignore，含 token）
+web/              Vue 3 + Vite 5 + Tailwind 前端（hash 路由，客户端搜索）
+server/           遗留后端，已退役（gitignore，勿用）
 ```
 
-## 本地开发
+## 测试
 
 ```bash
-# 后端（:3000）
-cd server && npm install && npm run dev
-
-# 前端（:5173，/api 代理到 :3000）
-cd web && npm install && npm run dev
+cd web
+node search-test.mjs && node render-test.mjs && node smoke-test.mjs
 ```
-
-## 生产部署
-
-```bash
-cd web && npm run build        # 产物在 web/dist
-cd server && npm start         # Express 同时托管 API 和 web/dist
-```
-
-环境变量：
-
-| 变量 | 说明 |
-|---|---|
-| `PORT` | 监听端口，默认 3000 |
-| `JWT_SECRET` | 生产环境必须设置（长随机字符串） |
-| `DATA_DIR` | SQLite 数据目录，默认 `server/data` |
-
-备份：定期复制 `server/data/blog.db*` 即可（WAL 模式，建议用 `sqlite3 blog.db ".backup ..."` 或停服复制）。
-
-## 首个用户
-
-第一个注册的用户自动成为所有者（owner），之后注册需要邀请码（成员管理页生成，7 天有效）。
